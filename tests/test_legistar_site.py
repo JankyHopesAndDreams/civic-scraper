@@ -8,8 +8,6 @@ from civic_scraper.base.cache import Cache
 from civic_scraper.platforms import LegistarSite
 
 
-# TODO: Bring back tests (remove skip decorator) when python-lesistar-scraper is resolved.
-@pytest.mark.skip(reason="Known bug in python-lesistar-scraper, Legistar currently not used")
 @pytest.mark.vcr()
 def test_scrape_defaults():
     """
@@ -20,6 +18,7 @@ def test_scrape_defaults():
     url = "https://nashville.legistar.com/Calendar.aspx"
     config = {"timezone": "US/Central"}
     site = LegistarSite(url, **config)
+    print("site", site.__repr__())
     assets = site.scrape(start_date, end_date)
     # 4 agendas and 1 minutes doc
     assert len(assets) == 5
@@ -51,7 +50,6 @@ def test_scrape_defaults():
     assert agenda.content_length is None
 
 
-@pytest.mark.skip(reason="Known bug in python-lesistar-scraper, Legistar currently not used")
 @pytest.mark.vcr()
 def test_scrape_no_meetings_for_date():
     """
@@ -65,7 +63,6 @@ def test_scrape_no_meetings_for_date():
     assert assets == []
 
 
-@pytest.mark.skip(reason="Known bug in python-lesistar-scraper, Legistar currently not used")
 @pytest.mark.vcr()
 def test_scrape_download_default(tmpdir):
     "Scraper should not download file assets by default"
@@ -81,7 +78,6 @@ def test_scrape_download_default(tmpdir):
     assert not target_dir.exists()
 
 
-@pytest.mark.skip(reason="Known bug in python-lesistar-scraper, Legistar currently not used")
 @pytest.mark.vcr()
 def test_scrape_download_true(tmpdir):
     "Setting download=True should download file assets"
@@ -99,7 +95,6 @@ def test_scrape_download_true(tmpdir):
     assert actual_files == expected
 
 
-@pytest.mark.skip(reason="Known bug in python-lesistar-scraper, Legistar currently not used")
 @pytest.mark.vcr()
 def test_scrape_download_filter_size(tmpdir):
     "Downloads should be filterable by size in MB"
@@ -119,7 +114,6 @@ def test_scrape_download_filter_size(tmpdir):
     assert actual_files == expected
 
 
-@pytest.mark.skip(reason="Known bug in python-lesistar-scraper, Legistar currently not used")
 @pytest.mark.vcr()
 def test_scrape_download_filter_type(tmpdir):
     "Downloads should be filterable by type"
@@ -139,7 +133,6 @@ def test_scrape_download_filter_type(tmpdir):
     assert actual_files == expected
 
 
-@pytest.mark.skip(reason="Known bug in python-lesistar-scraper, Legistar currently not used")
 @patch(
     "civic_scraper.platforms.legistar.site.today_local_str", return_value="2022-04-05"
 )
@@ -159,7 +152,6 @@ def test_scrape_current_day_by_default(today_local_str, tmpdir):
     assert actual_files == expected
 
 
-@pytest.mark.skip(reason="Known bug in python-lesistar-scraper, Legistar currently not used")
 @pytest.mark.vcr()
 def test_multiyear_scrape(tmpdir):
     "Downloads should be filterable by size in MB"

@@ -67,7 +67,8 @@ class Site(base.Site):
 
         ac = AssetCollection()
         start_year = int(start_date[:4])
-        events = [event[0] for event in webscraper.events(since=start_year)]
+        events_since_start_year = webscraper.events(since=start_year)
+        events = [event[0] for event in events_since_start_year]
         for event in events:
             meeting_meta = self._extract_meeting_meta(event, webscraper)
             for asset_type in asset_list:
