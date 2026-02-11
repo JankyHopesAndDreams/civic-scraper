@@ -206,7 +206,15 @@ class CivicClerkSite(base.Site):
                 + ";GB|20;12|PAGERONCLICK3|PBN;"
             )
 
-    def scrape(self, download=True):
+
+    def scrape(
+        self,
+        start_date=None,
+        end_date=None,
+        download=False,
+        file_size=None,
+        asset_list=["Agenda", "Minutes"],
+    ):
 
         ac = AssetCollection()
 
