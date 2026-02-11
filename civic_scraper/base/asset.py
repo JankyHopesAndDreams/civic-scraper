@@ -61,6 +61,7 @@ class Asset:
         self.content_type = content_type
         self.content_length = content_length
 
+
     def __repr__(self):
         return f"Asset({self.url})"
 
@@ -75,20 +76,38 @@ class Asset:
             Full path to downloaded file
         """
         Path(target_dir).mkdir(parents=True, exist_ok=True)
-        file_extension = mimetypes.guess_extension(self.content_type)
+        try:
+            file_extension = mimetypes.guess_extension(self.content_type)
+        except:
+            file_extension = ".pdf"
         file_name = "{}_{}{}".format(
             # meeting id reflects date and numeric identifier
             self.meeting_id,
             self.asset_type,
             file_extension,
         )
+
+        success=False
         if session:
             response = session.get(self.url, allow_redirects=True)
+            success=True
         else:
-            response = requests.get(self.url, allow_redirects=True)
+            try:
+                response = requests.get(self.url, allow_redirects=True)
+                success=True
+            except:
+                try:
+                    response = requests.get(self.url, headers={ 'User-Agent': 'Mozilla 1.0' }, allow_redirects=True)
+                    success=True
+                except:
+                    pass
+        if not success:
+            return None
+
         full_path = os.path.join(target_dir, file_name)
         with open(full_path, "wb") as outfile:
             outfile.write(response.content)
+        self.full_path = full_path
         return full_path
 
 
