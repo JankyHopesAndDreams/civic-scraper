@@ -8,7 +8,6 @@ from civic_scraper import base
 from civic_scraper.base.asset import Asset, AssetCollection
 from civic_scraper.base.cache import Cache
 
-
 class PrimeGovSite(base.Site):
     """For each Primegov site, there seems to be multiple API endpoints that can be queried:
     1. (GET) https://[city].primegov.com/api/meeting/search?from=[m/d/y]&to=[m/d/y]
@@ -75,8 +74,8 @@ class PrimeGovSite(base.Site):
 
         # API requires both start and end dates
         if not start_date or not end_date:
-            start_date = (datetime.today() - timedelta(days=30)).strftime("%m/%d/%Y")
-            end_date = datetime.today().strftime("%m/%d/%Y")
+            end_date = (datetime.today() + timedelta(days=30)).strftime("%m/%d/%Y")
+            start_date = datetime.today().strftime("%m/%d/%Y")
 
         response = self.session.get(
             f"{self.base_url}/api/meeting/search?from={start_date}&to={end_date}"
