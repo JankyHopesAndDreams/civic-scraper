@@ -73,7 +73,7 @@ class Runner:
             _collection = site.scrape(
                 start_date,
                 end_date,
-                cache=cache,
+#                cache=cache,
             )
             asset_collection.extend(_collection)
         metadata_file = asset_collection.to_csv(cache_obj.metadata_files_path)
@@ -97,5 +97,14 @@ class Runner:
         return getattr(mod, class_name)
 
     def _get_site_class_name(self, url):
-        if re.search(r"(civicplus|AgendaCenter)", url):
+        if re.search(r"(civicplus|AgendaCenter|agendacenter)", url):
             return "CivicPlusSite"
+        if re.search(r"primegov.com", url):
+            return "PrimeGovSite"
+        #Milpitas uses agendas-minutes for their civicplus instance
+        if re.search(r"(Agendas-Minutes)", url):
+            return "CivicPlusSite"
+        if re.search(r"(municodemeetings.com)", url):
+            return "MunicodeMeetingsSite"
+        if re.search(r"(legistar)", url):
+            return "LegistarSite"
